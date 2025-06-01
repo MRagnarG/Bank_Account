@@ -139,22 +139,6 @@ class Client():
 
             print(f"Here are the transactions of your {account} account: {account.transactions}")
     
-
-    
-client = Client("Ana", "12345678900")
-checking = CheckingAccount("0001", 1000)
-savings = SavingsAccount("0002", 5000)
-
-client.add_account(checking)
-client.add_account(savings)
-
-checking.deposit(1000)
-checking.withdraw(400)
-
-savings.apply_interest()
-
-client.get_all_balances()
-client.get_all_transactions()
     
 
 

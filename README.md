@@ -55,7 +55,21 @@ README.md          # Project description and usage instructions
 
 ## Next Steps (future improvements)
 
-- Add JSON-based data persistence (saving/loading accounts)
-- Implement terminal menu interface
-- Add automated tests using `unittest` or `pytest`
-- Build a simple graphical interface with `tkinter` or `PyQt`
+- Add JSON-based data persistence (saving/loading accounts).
+- Implement terminal menu interface.
+- Add automated tests.
+- Build a simple graphical interface.
+
+
+## Notes on Development
+
+This project was developed by me as part of my learning process in Python, with support from AI tools like ChatGPT. All design decisions, testing, and code understanding were reviewed and controlled by me.
+
+The AI acted as a coding assistant — similar to how one might use documentation, tutorials, or Stack Overflow — helping with:
+- Refining syntax and logic
+- Debugging edge cases
+- Providing examples and explanations when needed
+
+Estimated contribution:  
+- 90% of code written directly by me  
+- 10% suggestions, reviews, or improvements guided by AI assistance
