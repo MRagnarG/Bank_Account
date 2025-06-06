@@ -1,5 +1,18 @@
-
+from bank_tools import can_withdraw, apply_withdraw, calculate_interest, apply_deposit
 class Account():
+
+    """
+    Base class named Account that takes a initial account ID, balance and empty transfer list (history).
+
+        
+    Features:
+        Deposit: Deposit an amount to the accounts balance when it's valid.
+        Withdraw: Withdraws an amount from the accounts balance when it's valid.
+        Get Balance: Shows updated balance.
+        Get Transactions: Shows Transactions history.
+        __str__: returns the account followed by its ID.
+    
+    """
 
     def __init__(self, account, balance):
         
@@ -11,8 +24,7 @@ class Account():
     def deposit (self, amount):
         
         if amount > 0:
-            self.balance += amount
-            self.transactions.append(f"Deposit: {amount}")
+            self.balance, self.transactions = apply_deposit(self.balance, amount, self.transactions)
             print("Deposit successfull.")
         
         else:
@@ -21,9 +33,8 @@ class Account():
     
     def withdraw (self, amount):
         
-        if 0 < amount <= self.balance:
-            self.balance -= amount
-            self.transactions.append(f"Withdraw: {amount}")
+        if can_withdraw(self.balance, amount):
+            self.balance, self.transactions = apply_withdraw(self.balance, amount, self.transactions)
             print("Withdraw successfull.")
         
         else:
@@ -45,6 +56,20 @@ class Account():
 
 
 class SavingsAccount(Account):
+    """
+    Class named SavingsAccount that takes all previous functions and initial parameters
+    from the base class Account. Adds withdraw_limit and withdraw_count.
+
+        
+    Features:
+        Deposit: Deposit an amount to the accounts balance when it's valid.
+        Withdraw: Withdraws an amount from the accounts balance when it's valid.
+        Applies Interest: Simulates an interest applying to the balance.
+        Get Balance: Shows updated balance.
+        Get Transactions: Shows Transactions history.
+        __str__: returns the account followed by its ID.
+    
+    """
 
     def __init__(self, account, balance):
         super().__init__(account, balance)
@@ -56,11 +81,10 @@ class SavingsAccount(Account):
 
         if self.withdraw_count <= self.withdraw_limit:
 
-            if 0 < amount <= self.balance:
-                self.balance -= amount
-                self.transactions.append(f"Withdraw: {amount}")
-                self.withdraw_count += 1
+            if can_withdraw(self.balance, amount):
+                self.balance, self.transactions = apply_withdraw(self.balance, amount, self.transactions)
                 print("Withdraw successfull.")
+                self.withdraw_count += 1
 
             else:
                 print (f"Ammount of {amount} is not valid. Try Again.")
@@ -72,10 +96,28 @@ class SavingsAccount(Account):
     
     def apply_interest(self):
 
-        self.balance *= 1.0035
-        print("Month passed, interest applied.")
+        self.balance = calculate_interest(self.balance)
+        print("One month has passed, interest applied. ")
+
+    def __str__(self):
+        return f"Savings Account {self.account}"
     
 class CheckingAccount (Account):
+
+    """
+    Class named CheckingAccount that takes all previous functions and initial parameters
+    from the base class Account. Adds a limit to the balance and a score system.
+
+        
+    Features:
+        Deposit: Deposit an amount to the accounts balance when it's valid.
+        Withdraw: Withdraws an amoount from the accounts balance when it's valid.
+        Credit Increase System: Checks for available score and determines possible increase on the credit.
+        Get Balance: Shows updated balance.
+        Get Transactions: Shows Transactions history.
+        __str__: returns the account followed by its ID.
+    
+    """
     
     def __init__(self, account, balance):
         super().__init__(account, balance)
@@ -85,8 +127,7 @@ class CheckingAccount (Account):
     def withdraw(self, amount):
         
         if amount > 0 and (self.balance - amount) >= self.balance_limit:
-            self.balance -= amount
-            self.transactions.append(f"Withdraw: {amount}")
+            self.balance, self.transactions = apply_withdraw(self.balance, amount, self.transactions)
             print("Withdraw successfull.")
         
         else:
@@ -110,7 +151,20 @@ class CheckingAccount (Account):
 
             self.balance_limit -= (self.score//200)*1000
     
+    def __str__(self):
+        return f"Checking Account {self.account}"
+    
 class Client():
+
+    """
+    Class named client that takes initial parameters like name, id number and creates an empty list with
+    the users available accounts.
+    
+    Features:
+        Add an account: Creates an account to the user and adds it to the available accounts list.
+        Get all balances: Shows to the user all balances from all availables accounts.
+        Get all transactions: the user's transaction history.
+    """
 
     def __init__(self, name, id_number):
 
