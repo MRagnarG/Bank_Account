@@ -8,9 +8,10 @@ This project is a simulation of a simple bank system, built using Python and obj
 - Deposit and withdraw funds with input validation
 - Transaction history tracking
 - Monthly interest applied to savings accounts
-- Credit score increases based on deposit behavior
+- Credit score system that increases based on deposit amounts
 - Automatic overdraft limit increase based on credit score
 - A single client can have multiple accounts (composition)
+- Business logic refactored into reusable helper functions via `bank_tools.py`
 
 ## Class Structure
 
@@ -18,6 +19,8 @@ This project is a simulation of a simple bank system, built using Python and obj
 - `SavingsAccount`: Inherits from `Account`, includes withdrawal limits and interest calculation.
 - `CheckingAccount`: Inherits from `Account`, allows overdraft and includes a credit score system that can increase the overdraft limit.
 - `Client`: Represents a customer who can hold multiple bank accounts.
+
+These classes delegate financial logic to reusable helper functions for better modularity and testing.
 
 ## Example Usage
 
@@ -49,8 +52,10 @@ This project was developed as part of my Python learning journey, with the goal 
 ## File Structure
 
 ```
-bank_account.py    # Main code with class definitions
-README.md          # Project description and usage instructions
+bank_account_mod.py    # Contains all class definitions and core account logic
+bank_tools.py          # Pure helper functions (e.g. interest, withdraw logic)
+README.md              # Project documentation
+main.py                # (Planned) Main program with usage demos and test scenarios
 ```
 
 ## Next Steps (future improvements)
@@ -59,7 +64,7 @@ README.md          # Project description and usage instructions
 - Implement terminal menu interface.
 - Add automated tests.
 - Build a simple graphical interface.
-
+- Create `main.py` as a clean demo/testing entry point using `if __name__ == "__main__":`
 
 ## Notes on Development
 
