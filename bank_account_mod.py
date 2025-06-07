@@ -25,30 +25,30 @@ class Account():
         
         if amount > 0:
             self.balance, self.transactions = apply_deposit(self.balance, amount, self.transactions)
-            print("Deposit successfull.")
+            print("\nDeposit successfull.")
         
         else:
-            print(f"Ammount of {amount} is not valid. Try Again")
+            print(f"\nAmmount of {amount} is not valid. Try Again")
 
     
     def withdraw (self, amount):
         
         if can_withdraw(self.balance, amount):
             self.balance, self.transactions = apply_withdraw(self.balance, amount, self.transactions)
-            print("Withdraw successfull.")
+            print("\nWithdraw successfull.")
         
         else:
-            print (f"Ammount of {amount} is not valid. Try Again.")
+            print (f"\nAmmount of {amount} is not valid. Try Again.")
 
     
     def get_balance(self):
         
-        return print(f"Account balance: {self.balance} USD.")
+        return f"Account balance: {self.balance} USD."
     
     
     def get_transactions(self):
 
-        return print(f"History of transactions: {self.transactions}")
+        return f"History of transactions: {self.transactions}"
     
     def __str__(self):
         return f"Account {self.account}"
@@ -83,21 +83,21 @@ class SavingsAccount(Account):
 
             if can_withdraw(self.balance, amount):
                 self.balance, self.transactions = apply_withdraw(self.balance, amount, self.transactions)
-                print("Withdraw successfull.")
+                print("\nWithdraw successfull.")
                 self.withdraw_count += 1
 
             else:
-                print (f"Ammount of {amount} is not valid. Try Again.")
+                print (f"\nAmmount of {amount} is not valid. Try Again.")
         
         else:
 
-            print(f"You have come to the max limit of {self.withdraw_limit} limits this month.")
-            print(f"If you want you can set a new limit by selecting the option Set new limit on our menu")
+            print(f"\nYou have come to the max limit of {self.withdraw_limit} limits this month.")
+            print(f"\nIf you want you can set a new limit by selecting the option Set new limit on our menu")
     
     def apply_interest(self):
 
         self.balance = calculate_interest(self.balance)
-        print("One month has passed, interest applied. ")
+        print("\nOne month has passed, interest applied. ")
 
     def __str__(self):
         return f"Savings Account {self.account}"
@@ -128,10 +128,10 @@ class CheckingAccount (Account):
         
         if amount > 0 and (self.balance - amount) >= self.balance_limit:
             self.balance, self.transactions = apply_withdraw(self.balance, amount, self.transactions)
-            print("Withdraw successfull.")
+            print("\nWithdraw successfull.")
         
         else:
-            print (f"Ammount of {amount} is not valid. Try Again.")
+            print (f"\nAmmount of {amount} is not valid. Try Again.")
 
     def credit_increase (self):
 
@@ -140,12 +140,12 @@ class CheckingAccount (Account):
             if transaction.startswith("Deposit"):
                 _, amount = transaction.split(": ")
                 self.score += int(float(amount)) // 500
-                print(f"Score atual: {self.score}. Limite agora: {abs(self.balance_limit)}USD. ")
+                print(f"\nActual Score: {self.score}. Limit now: {abs(self.balance_limit)}USD. ")
 
         
         if self.score == 0:
 
-            print(f"Unfortunately you cannot increase your limite.")
+            print(f"\nUnfortunately you cannot increase your limite.")
         
         else:
 
@@ -175,6 +175,10 @@ class Client():
     def add_account(self, account):
 
         self.accounts.append(account)
+
+    def get_accounts(self):
+
+        return self.accounts
     
     def get_all_balances(self):
 
@@ -182,18 +186,37 @@ class Client():
 
         for account in self.accounts:
 
-            print(f"{account} has a balance of {account.balance} USD")
+            print(f"\n{account} has a balance of {account.balance} USD")
             TotalBalance += account.balance
         
-        print(f"You have a total balance of {TotalBalance} USD.")
+        print(f"\nYou have a total balance of {TotalBalance} USD.")
     
     def get_all_transactions(self):
 
         for account in self.accounts:
 
-            print(f"Here are the transactions of your {account} account: {account.transactions}")
+            print(f"\nHere are the transactions of your {account} account: {account.transactions}")
     
     
+if __name__ == "__main__":
+    client = Client("Ana", "12345678900")
+    checking = CheckingAccount("0001", 1000)
+    savings = SavingsAccount("0002", 5000)
+    checking2 = CheckingAccount("0002", 1050)
+
+    client.add_account(checking)
+    client.add_account(savings)
+    client.add_account(checking2)
+
+    checking.deposit(1000)
+    checking.withdraw(400)
+
+    savings.deposit(200)
+    savings.withdraw(400)
+    savings.apply_interest()
+
+    client.get_all_balances()
+    client.get_all_transactions()
 
 
 
